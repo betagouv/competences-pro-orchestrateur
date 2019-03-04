@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -e
+
+./script/docker-compose-dev run --rm client npm install
+./script/docker-compose-dev run --rm serveur bundle install --path vendor
+./script/docker-compose-dev run --rm serveur bundle exec ./bin/rails db:migrate RAILS_ENV=development
+./script/docker-compose-dev up -d
