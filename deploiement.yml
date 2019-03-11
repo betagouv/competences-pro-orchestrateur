@@ -1,0 +1,66 @@
+---
+- hosts: all
+  remote_user: cpro
+
+  vars:
+    chemin_client: ~/client
+    chemin_serveur: ~/serveur
+    chemin_orchestrateur: ~/orchestrateur
+    chemin_config: ~/config
+    chemin_acme: ~/acme
+    docker_compose_environnement:
+      CHEMIN_CLIENT: "{{ chemin_client }}"
+      CHEMIN_SERVEUR: "{{ chemin_serveur }}"
+      CHEMIN_ACME: "{{ chemin_acme }}"
+
+  tasks:
+    - name: Clone ou mets à jour le dépot
+      git:
+        repo: "https://github.com/betagouv/{{ item.depot }}.git"
+        version: deploiement
+        dest: "./{{ item.destination }}"
+        force: yes
+      loop:
+        - destination: "{{ chemin_orchestrateur }}"
+          depot: competences-pro-orchestrateur
+
+        - destination: "{{ chemin_serveur }}"
+          depot: competences-pro-serveur
+
+        - destination: "{{ chemin_client }}"
+          depot: competences-pro
+
+    - name: Copie le fichier d'environnement de production vers l'orchestrateur
+      copy:
+        remote_src: yes
+        src: "{{ chemin_config }}/.env.serveur.prod"
+        dest: "{{ chemin_orchestrateur }}/.env.serveur.prod"
+
+    - name: Copie le fichier de configuration du client
+      copy:
+        remote_src: yes
+        src: "{{ chemin_config }}/config.json"
+        dest: "{{ chemin_client }}/config.json"
+
+    - name: Crée le dossier acme
+      file:
+        path: "{{ chemin_acme }}"
+        state: directory
+
+    - name: Construis les images docker
+      command: docker-compose build --pull
+      args:
+        chdir: "{{ chemin_orchestrateur }}"
+      environment: "{{ docker_compose_environnement }}"
+
+    - name: Lance les tâches de gestion de la base de données
+      command: docker-compose run --rm serveur bundle exec rails db:migrate
+      args:
+        chdir: "{{ chemin_orchestrateur }}"
+      environment: "{{ docker_compose_environnement }}"
+
+    - name: Démarre les images
+      command: docker-compose up -d
+      args:
+        chdir: "{{ chemin_orchestrateur }}"
+      environment: "{{ docker_compose_environnement }}"

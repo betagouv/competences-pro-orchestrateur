@@ -1,0 +1,47 @@
+version: "2"
+services:
+
+  traefik:
+    image: traefik
+    volumes:
+      - ./traefik.toml:/etc/traefik/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${CHEMIN_ACME}:/etc/traefik/acme
+    ports:
+      - "443:443"
+    restart: always
+
+  client:
+    build:
+      context: ${CHEMIN_CLIENT}
+    restart: always
+    depends_on:
+      - serveur
+    labels:
+      traefik.enable: 'true'
+      traefik.frontend.rule: 'Host: competences-pro.beta.gouv.fr'
+      traefik.port: '80'
+
+  serveur:
+    build:
+      context: ${CHEMIN_SERVEUR}
+      args:
+        RAILS_ENV: production
+    env_file:
+      - .env.serveur.prod
+    restart: always
+    depends_on:
+      - postgres
+    labels:
+      traefik.enable: 'true'
+      traefik.frontend.rule: 'Host: api.competences-pro.beta.gouv.fr'
+      traefik.port: '3000'
+
+  postgres:
+    image: postgres:11
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
