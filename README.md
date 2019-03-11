@@ -17,6 +17,20 @@ Pour démarrer l'environnement de développement:
 
 Et se rendre sur http://localhost:4000
 
+## Déploiement
+
+Pour déployer l'application, un *playbook* [ansible][] est fourni. La machine cible doit avoir docker, docker-compose et git installé.
+
+Créer un fichier `hotes` en rajoutant l'adresse du serveur déployé:
+
+    example.net:22
+
+Puis lancer le déploiement:
+
+    ansible-playbook --inventory=hotes deploiement.yml
+
 ## Licence
 
 Ce logiciel et son code source sont distribués sous [licence AGPL](https://www.gnu.org/licenses/why-affero-gpl.fr.html).
+
+[ansible]: https://www.ansible.com/
