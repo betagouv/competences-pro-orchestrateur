@@ -14,7 +14,7 @@
       CHEMIN_ACME: "{{ chemin_acme }}"
 
   tasks:
-    - name: Clone ou mets à jour le dépot
+    - name: Clone ou met à jour le dépot
       git:
         repo: "https://github.com/betagouv/{{ item.depot }}.git"
         version: deploiement
