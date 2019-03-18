@@ -19,7 +19,24 @@ Et se rendre sur http://localhost:4000
 
 ## Déploiement
 
-Pour déployer l'application, un *playbook* [ansible][] est fourni. La machine cible doit avoir docker, docker-compose et git installés.
+Pour déployer l'application, un *playbook* [ansible][] est fourni. La machine cible doit avoir *docker*, *docker-compose* et *git* installés. Des fichiers de configuration doivent également être présent.
+
+Un fichier `config.json`. Remplacer la valeur de la clef `hote_serveur`, avec l'URL du serveur qui stocke les événements.
+```
+{
+  "config": {
+    "hote_serveur": "http://localhost:3000"
+  }
+}
+```
+
+Et un fichier `.env.serveur.prod`. `SECRET_KEY_BASE` et `DATABASE_URL` devraient être modifiés.
+```
+SECRET_KEY_BASE=ICI_METTRE_UNE_VRAI_SECRET_KEY_BASE
+RAILS_SERVE_STATIC_FILES=true
+RAILS_LOG_TO_STDOUT=true
+DATABASE_URL=postgres://postgres:@postgres/postgres
+```
 
 Créer un fichier `hotes` en rajoutant l'adresse du serveur déployé:
 
