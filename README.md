@@ -19,7 +19,7 @@ Et se rendre sur http://localhost:4000
 
 ## Déploiement
 
-Pour déployer l'application, un *playbook* [ansible][] est fourni. La machine cible doit avoir docker, docker-compose et git installé.
+Pour déployer l'application, un *playbook* [ansible][] est fourni. La machine cible doit avoir docker, docker-compose et git installés.
 
 Créer un fichier `hotes` en rajoutant l'adresse du serveur déployé:
 
