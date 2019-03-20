@@ -15,6 +15,8 @@ services:
     image: node:10
     volumes:
       - ${CHEMIN_CLIENT}:/app
+    env_file:
+      - .env.client
     working_dir: /app
     command: npm run dev
     depends_on:
