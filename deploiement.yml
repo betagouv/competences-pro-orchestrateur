@@ -3,15 +3,15 @@
   remote_user: cpro
 
   vars:
-    chemin_client: ~/client
-    chemin_serveur: ~/serveur
-    chemin_orchestrateur: ~/orchestrateur
-    chemin_config: ~/config
-    chemin_acme: ~/acme
+    chemin_client: client
+    chemin_serveur: serveur
+    chemin_orchestrateur: orchestrateur
+    chemin_config: config
+    chemin_acme: acme
     docker_compose_environnement:
-      CHEMIN_CLIENT: "{{ chemin_client }}"
-      CHEMIN_SERVEUR: "{{ chemin_serveur }}"
-      CHEMIN_ACME: "{{ chemin_acme }}"
+      CHEMIN_CLIENT: "../{{ chemin_client }}"
+      CHEMIN_SERVEUR: "../{{ chemin_serveur }}"
+      CHEMIN_ACME: "../{{ chemin_acme }}"
 
   tasks:
     - name: Clone ou met à jour le dépot
