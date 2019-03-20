@@ -9,6 +9,7 @@ services:
       - ${CHEMIN_ACME}:/etc/traefik/acme
     ports:
       - "443:443"
+      - "80:80"
     restart: always
 
   client:
