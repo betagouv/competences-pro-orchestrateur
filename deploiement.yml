@@ -12,6 +12,7 @@
       CHEMIN_CLIENT: "../{{ chemin_client }}"
       CHEMIN_SERVEUR: "../{{ chemin_serveur }}"
       CHEMIN_ACME: "../{{ chemin_acme }}"
+      URL_SERVEUR: "https://api.competences-pro.beta.gouv.fr"
 
   tasks:
     - name: Clone ou met à jour le dépot
@@ -35,12 +36,6 @@
         remote_src: yes
         src: "{{ chemin_config }}/.env.serveur.prod"
         dest: "{{ chemin_orchestrateur }}/.env.serveur.prod"
-
-    - name: Copie le fichier de configuration du client
-      copy:
-        remote_src: yes
-        src: "{{ chemin_config }}/config.json"
-        dest: "{{ chemin_client }}/config.json"
 
     - name: Crée le dossier acme
       file:

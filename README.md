@@ -24,17 +24,9 @@ Pour déployer l'application, un *playbook* [ansible][] est fourni.
 ### Pre-requis de la machine cible
 
 La machine cible doit avoir *docker*, *docker-compose* et *git* installés.
-De plus, des fichiers de configuration doivent également être présent.
+De plus, un fichier de configuration doit également être présent.
 
-Un fichier `config.json`. Remplacer la valeur de la clef `hote_serveur`, avec l'URL du serveur qui stocke les événements.
-
-    {
-      "config": {
-        "hote_serveur": "http://localhost:3000"
-      }
-    }
-
-Et un fichier `.env.serveur.prod`. `SECRET_KEY_BASE` et `DATABASE_URL` devraient être modifiés.
+Un fichier `.env.serveur.prod`. `SECRET_KEY_BASE` et `DATABASE_URL` devraient être modifiés.
 
     SECRET_KEY_BASE=ICI_METTRE_UNE_VRAI_SECRET_KEY_BASE
     RAILS_SERVE_STATIC_FILES=true
