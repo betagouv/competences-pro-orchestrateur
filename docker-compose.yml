@@ -15,6 +15,8 @@ services:
   client:
     build:
       context: ${CHEMIN_CLIENT}
+      args:
+        URL_SERVEUR: ${URL_SERVEUR}
     restart: always
     depends_on:
       - serveur
