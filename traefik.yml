@@ -1,0 +1,42 @@
+---
+- hosts: all
+
+  vars:
+    chemin_racine: "{{ ansible_env.HOME }}"
+    chemin_config: "{{ chemin_racine }}/traefik"
+    chemin_acme: "{{ chemin_racine }}/acme"
+
+  tasks:
+    - name: Crée les dossiers
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - "{{ chemin_acme }}"
+        - "{{ chemin_config }}"
+
+    - name: Copie le fichier de config
+      copy:
+        src: traefik.toml
+        dest: "{{ chemin_config }}"
+
+    - name: Crée le réseau traefik
+      docker_network:
+        name: traefik
+
+    - name: Démarre traefik
+      docker_container:
+        image: traefik
+        name: traefik
+        restart_policy: always
+        pull: true
+        restart: true
+        published_ports:
+          - 443:443
+          - 80:80
+        networks:
+          - name: traefik
+        volumes:
+          - "{{ chemin_config }}/traefik.toml:/etc/traefik/traefik.toml"
+          - /var/run/docker.sock:/var/run/docker.sock
+          - "{{ chemin_acme }}:/etc/traefik/acme"

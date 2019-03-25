@@ -1,29 +1,21 @@
 version: "2"
 services:
 
-  traefik:
-    image: traefik
-    volumes:
-      - ./traefik.toml:/etc/traefik/traefik.toml
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${CHEMIN_ACME}:/etc/traefik/acme
-    ports:
-      - "443:443"
-      - "80:80"
-    restart: always
-
   client:
     build:
       context: ${CHEMIN_CLIENT}
       args:
-        URL_SERVEUR: ${URL_SERVEUR}
+        URL_SERVEUR: "https://${HOTE_SERVEUR}"
     restart: always
     depends_on:
       - serveur
+    networks:
+      - "${RESEAU_TRAEFIK}"
     labels:
       traefik.enable: 'true'
-      traefik.frontend.rule: 'Host: competences-pro.beta.gouv.fr'
+      traefik.frontend.rule: 'Host: ${HOTE_CLIENT}'
       traefik.port: '80'
+      traefik.docker.network: '${RESEAU_TRAEFIK}'
 
   serveur:
     build:
@@ -35,16 +27,27 @@ services:
     restart: always
     depends_on:
       - postgres
+    networks:
+      - "${RESEAU_TRAEFIK}"
+      - postgres
     labels:
       traefik.enable: 'true'
-      traefik.frontend.rule: 'Host: api.competences-pro.beta.gouv.fr'
+      traefik.frontend.rule: 'Host: ${HOTE_SERVEUR}'
       traefik.port: '3000'
+      traefik.docker.network: '${RESEAU_TRAEFIK}'
 
   postgres:
     image: postgres:11
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - postgres
 
 volumes:
   pgdata:
+
+networks:
+  traefik:
+    external: true
+  postgres:
