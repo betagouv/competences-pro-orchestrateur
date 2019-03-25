@@ -46,7 +46,7 @@ Créer un fichier `hotes` en rajoutant l'adresse du serveur déployé :
 
 Puis lancer le déploiement :
 
-    ansible-playbook --inventory=hotes deploiement.yml
+    ansible-playbook --user=XXX --inventory=hotes deploiement.yml
 
 ## Licence
 

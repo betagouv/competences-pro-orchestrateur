@@ -1,46 +1,49 @@
 ---
 - hosts: all
-  remote_user: cpro
 
   vars:
-    chemin_client: client
-    chemin_serveur: serveur
-    chemin_orchestrateur: orchestrateur
-    chemin_config: config
-    chemin_acme: acme
+    chemin_racine: "{{ ansible_env.HOME }}"
+    chemin_client: "{{ chemin_racine }}/client"
+    chemin_serveur: "{{ chemin_racine }}/serveur"
+    chemin_orchestrateur: "{{ chemin_racine }}/orchestrateur"
+    chemin_config: "{{ chemin_racine }}/config"
+    version_orchestrateur: master
+    version_serveur: master
+    version_client: master
+    hote_client: competences-pro.beta.gouv.fr
+    hote_serveur: api.competences-pro.beta.gouv.fr
     docker_compose_environnement:
-      CHEMIN_CLIENT: "../{{ chemin_client }}"
-      CHEMIN_SERVEUR: "../{{ chemin_serveur }}"
-      CHEMIN_ACME: "../{{ chemin_acme }}"
-      URL_SERVEUR: "https://api.competences-pro.beta.gouv.fr"
+      CHEMIN_CLIENT: "{{ chemin_client }}"
+      CHEMIN_SERVEUR: "{{ chemin_serveur }}"
+      HOTE_SERVEUR: "{{ hote_serveur }}"
+      HOTE_CLIENT: "{{ hote_client }}"
+      RESEAU_TRAEFIK: "traefik"
 
   tasks:
     - name: Clone ou met à jour le dépot
       git:
         repo: "https://github.com/betagouv/{{ item.depot }}.git"
-        version: master
-        dest: "./{{ item.destination }}"
+        version: "{{ item.version }}"
+        dest: "{{ item.destination }}"
         force: yes
       loop:
         - destination: "{{ chemin_orchestrateur }}"
           depot: competences-pro-orchestrateur
+          version: "{{ version_orchestrateur }}"
 
         - destination: "{{ chemin_serveur }}"
           depot: competences-pro-serveur
+          version: "{{ version_serveur }}"
 
         - destination: "{{ chemin_client }}"
           depot: competences-pro
+          version: "{{ version_client }}"
 
     - name: Copie le fichier d'environnement de production vers l'orchestrateur
       copy:
         remote_src: yes
         src: "{{ chemin_config }}/.env.serveur.prod"
         dest: "{{ chemin_orchestrateur }}/.env.serveur.prod"
-
-    - name: Crée le dossier acme
-      file:
-        path: "{{ chemin_acme }}"
-        state: directory
 
     - name: Construis les images docker
       command: docker-compose build --pull
