@@ -22,9 +22,25 @@ Et se rendre sur http://localhost:4000
 
 ## Déploiement
 
-Pour déployer l'application, un *playbook* [ansible][] est fourni.
+Pour déployer l'application, des *playbooks* [ansible][] sont fournis.
 
-### Pre-requis de la machine cible
+Pre-requis : `ansible`
+
+Créer un fichier `hotes` en rajoutant l'adresse du serveur déployé :
+
+    example.net:22
+
+## Déploiement de traefik
+
+Nous utilisons [Traefik][] pour exposer les différents containers vers l'extérieur. Vous pouvez personaliser sa configuration en éditant le fichier `traefik.toml`.
+
+Puis lancer le déploiement (avec l'utilisateur distant `utilisateur`):
+
+    ansible-playbook --user=utilisateur --inventory=hotes traefik.yml
+
+### Déploiement de l'application
+
+#### Pre-requis de la machine cible
 
 La machine cible doit avoir *docker*, *docker-compose* et *git* installés.
 De plus, un fichier de configuration doit également être présent.
@@ -36,20 +52,28 @@ Un fichier `.env.serveur.prod`. `SECRET_KEY_BASE` et `DATABASE_URL` devraient ê
     RAILS_LOG_TO_STDOUT=true
     DATABASE_URL=postgres://postgres:@postgres/postgres
 
-### Sur la machine qui fait le déploiement
+#### Sur la machine qui fait le déploiement
 
-Pre-requis : `ansible`
+Puis lancer le déploiement (avec l'utilisateur distant `utilisateur`):
 
-Créer un fichier `hotes` en rajoutant l'adresse du serveur déployé :
+    ansible-playbook --user=utilisateur --inventory=hotes deploiement.yml
 
-    example.net:22
+Il est également possible de personnaliser les chemins, les branches ou les hôtes :
 
-Puis lancer le déploiement :
+    ansible-playbook --inventory=hotes --user=utilisateur --extra-vars="chemin_racine={{ansible_env.HOME}}/preprod hote_client=preprod.competences-pro.beta.gouv.fr hote_serveur=apipreprod.competences-pro.beta.gouv.fr" deploiement.yml
 
-    ansible-playbook --user=XXX --inventory=hotes deploiement.yml
+Voici la liste des variables typique à personnaliser :
+
+- `chemin_racine`
+- `version_orchestrateur`
+- `version_serveur`
+- `version_client`
+- `hote_client`
+- `hote_serveur`
 
 ## Licence
 
 Ce logiciel et son code source sont distribués sous [licence AGPL](https://www.gnu.org/licenses/why-affero-gpl.fr.html).
 
 [ansible]: https://www.ansible.com/
+[traefik]: https://traefik.io/
