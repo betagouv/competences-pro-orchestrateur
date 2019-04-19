@@ -1,0 +1,12 @@
+version: "2"
+syncs:
+  client-sync:
+    notify_terminal: true
+    src: ${CHEMIN_CLIENT}
+    sync_excludes: ['.gitignore', '.git', 'node_modules']
+
+  serveur-sync:
+    notify_terminal: true
+    src: ${CHEMIN_SERVEUR}
+    sync_excludes: ['.gitignore', '.git', 'vendor']
+

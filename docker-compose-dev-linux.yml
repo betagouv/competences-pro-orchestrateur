@@ -1,0 +1,8 @@
+version: "3"
+services:
+  client:
+    volumes:
+      - ${CHEMIN_CLIENT}:/app
+  serveur:
+    volumes:
+      - ${CHEMIN_SERVEUR}:/app

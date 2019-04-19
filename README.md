@@ -10,6 +10,9 @@ Pour accéder à l'api, il faut rajouter une entrée dans votre fichier `/etc/ho
 
 Pour démarrer l'environnement de développement :
 
+Pre-requis Mac : `docker-sync` (install avec `gem install docker-sync`)
+
+
     git clone git@github.com:betagouv/competences-pro.git client
     git clone git@github.com:betagouv/competences-pro-serveur.git serveur
 

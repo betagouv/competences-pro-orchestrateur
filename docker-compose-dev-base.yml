@@ -13,8 +13,6 @@ services:
 
   client:
     image: node:10
-    volumes:
-      - ${CHEMIN_CLIENT}:/app
     env_file:
       - .env.client
     working_dir: /app
@@ -24,8 +22,6 @@ services:
 
   serveur:
     image: ruby:2.6
-    volumes:
-      - ${CHEMIN_SERVEUR}:/app
     env_file:
       - .env.serveur
     working_dir: /app

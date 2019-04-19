@@ -3,3 +3,4 @@ hotes
 client
 serveur
 deploiement.retry
+.docker-sync
