@@ -1,0 +1,14 @@
+version: "3"
+services:
+  client:
+    volumes:
+      - client-sync:/app:nocopy
+  serveur:
+    volumes:
+      - serveur-sync:/app:nocopy
+
+volumes:
+  client-sync:
+    external: true
+  serveur-sync:
+    external: true
