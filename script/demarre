@@ -2,7 +2,7 @@
 
 set -e
 
-if [ $(uname) == "Darwin" ]
+if [ $(uname) = "Darwin" ]
 then
   docker-sync start
 fi
