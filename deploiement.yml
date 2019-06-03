@@ -6,7 +6,7 @@
     chemin_client: "{{ chemin_racine }}/client"
     chemin_serveur: "{{ chemin_racine }}/serveur"
     chemin_orchestrateur: "{{ chemin_racine }}/orchestrateur"
-    chemin_config: "{{ chemin_racine }}/config"
+    chemin_config: "{{ ansible_env.HOME }}/config"
     version_orchestrateur: master
     version_serveur: master
     version_client: master
