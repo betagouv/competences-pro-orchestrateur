@@ -71,6 +71,8 @@ Voici la liste des variables typique à personnaliser :
 - `hote_client`
 - `hote_serveur`
 
+**Attention : il faut impérativement spécifier un `chemin_racine` différent de `{{ ansible_env.HOME }}` si on souhaite déployer d'autres versions que `master`. Dans le cas contraire, l'application pointera vers la base de données de production, avec tous les risques de corruption que cela peut entraîner.**
+
 ## Licence
 
 Ce logiciel et son code source sont distribués sous [licence AGPL](https://www.gnu.org/licenses/why-affero-gpl.fr.html).
