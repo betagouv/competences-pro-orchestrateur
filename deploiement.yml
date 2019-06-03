@@ -18,6 +18,7 @@
       HOTE_SERVEUR: "{{ hote_serveur }}"
       HOTE_CLIENT: "{{ hote_client }}"
       RESEAU_TRAEFIK: "traefik"
+      COMPOSE_PROJECT_NAME: "{{ chemin_racine|replace('/', '-') }}"
 
   tasks:
     - name: Clone ou met à jour le dépot
