@@ -15,8 +15,8 @@
     docker_compose_environnement:
       CHEMIN_CLIENT: "{{ chemin_client }}"
       CHEMIN_SERVEUR: "{{ chemin_serveur }}"
-      HOTE_SERVEUR: "{{ hote_serveur }}"
       HOTE_CLIENT: "{{ hote_client }}"
+      HOTE_SERVEUR: "{{ hote_serveur }}"
       RESEAU_TRAEFIK: "traefik"
       COMPOSE_PROJECT_NAME: "{{ chemin_racine|replace('/', '-') }}"
 
