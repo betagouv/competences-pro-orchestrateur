@@ -6,6 +6,7 @@ services:
       context: ${CHEMIN_CLIENT}
       args:
         URL_SERVEUR: "https://${HOTE_SERVEUR}"
+        JETON_CLIENT_ROLLBAR: "e92a61f4d5f242afb40e0b4f8c3d3a4c"
     restart: always
     depends_on:
       - serveur
