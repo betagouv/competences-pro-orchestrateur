@@ -51,6 +51,7 @@ Un fichier `.env.serveur.prod`. `SECRET_KEY_BASE` et `DATABASE_URL` devraient ê
     RAILS_SERVE_STATIC_FILES=true
     RAILS_LOG_TO_STDOUT=true
     DATABASE_URL=postgres://postgres:@postgres/postgres
+    JETON_SERVEUR_ROLLBAR=
 
 #### Sur la machine qui fait le déploiement
 
