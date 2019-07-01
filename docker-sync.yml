@@ -8,5 +8,5 @@ syncs:
   serveur-sync:
     notify_terminal: true
     src: ${CHEMIN_SERVEUR}
-    sync_excludes: ['.gitignore', '.git', 'vendor']
+    sync_excludes: ['.gitignore', '.git', 'vendor', 'tmp', 'log']
 
