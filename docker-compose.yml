@@ -23,6 +23,8 @@ services:
       context: ${CHEMIN_SERVEUR}
       args:
         RAILS_ENV: production
+    environment:
+      HOTE_SERVEUR: "${HOTE_SERVEUR}"
     env_file:
       - .env.serveur.prod
     restart: always
