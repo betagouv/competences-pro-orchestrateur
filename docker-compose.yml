@@ -28,6 +28,8 @@ services:
     env_file:
       - .env.serveur.prod
     restart: always
+    volumes:
+      - rails-storage:/app/storage
     depends_on:
       - postgres
     networks:
@@ -49,6 +51,7 @@ services:
 
 volumes:
   pgdata:
+  rails-storage:
 
 networks:
   traefik:
