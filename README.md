@@ -38,6 +38,10 @@ Puis lancer le déploiement (avec l'utilisateur distant `utilisateur`):
 
     ansible-playbook --user=utilisateur --inventory=hotes traefik.yml
 
+### Déploiement du site site web vitrine
+
+    ansible-playbook --user=utilisateur --inventory=hotes site.yml
+
 ### Déploiement de l'application
 
 #### Pre-requis de la machine cible
