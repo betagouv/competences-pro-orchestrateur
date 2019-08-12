@@ -1,0 +1,35 @@
+---
+- hosts: all
+
+  vars:
+    chemin_racine: "{{ ansible_env.HOME }}"
+    chemin_site: "{{ chemin_racine }}/www"
+    image_site: "{{ chemin_site|replace('/', '') }}"
+    hote_site: eva.beta.gouv.fr
+
+  tasks:
+    - name: Clone ou met à jour le dépot
+      git:
+        repo: "https://github.com/betagouv/competences-pro-www.git"
+        version: "master"
+        dest: "{{ chemin_site }}"
+        force: yes
+
+    - name: Construis l'image docker
+      command: "docker build --pull --tag {{ image_site }} ."
+      args:
+        chdir: "{{ chemin_site }}"
+
+    - name: Démarre l'image
+      docker_container:
+        image: "{{ image_site }}"
+        name: "{{ image_site  }}"
+        restart_policy: always
+        restart: true
+        networks:
+          - name: traefik
+        labels:
+          traefik.enable: 'true'
+          traefik.port: '80'
+          traefik.frontend.rule: "Host:{{ hote_site }}"
+          traefik.docker.network: 'traefik'
