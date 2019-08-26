@@ -25,6 +25,7 @@ services:
         RAILS_ENV: production
     environment:
       HOTE_SERVEUR: "${HOTE_SERVEUR}"
+      TZ: Europe/Paris
     env_file:
       - .env.serveur.prod
     restart: always
