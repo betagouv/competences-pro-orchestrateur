@@ -57,6 +57,11 @@ Un fichier `.env.serveur.prod`. `SECRET_KEY_BASE` et `DATABASE_URL` devraient ê
     DATABASE_URL=postgres://postgres:@postgres/postgres
     JETON_SERVEUR_ROLLBAR=
 
+    ## information de connexion pour la sauvegarde BDD
+    POSTGRES_USER=postgres
+    POSTGRES_PASSWORD=
+    POSTGRES_DB=postgres
+
 #### Sur la machine qui fait le déploiement
 
 Puis lancer le déploiement (avec l'utilisateur distant `utilisateur`):
