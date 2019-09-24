@@ -52,6 +52,12 @@
         chdir: "{{ chemin_orchestrateur }}"
       environment: "{{ docker_compose_environnement }}"
 
+    - name: sauvegarde la base avant deploiement
+      command: docker-compose run --rm pgbackups /backup.sh
+      args:
+        chdir: "{{ chemin_orchestrateur }}"
+      environment: "{{ docker_compose_environnement }}"
+
     - name: Lance les tâches de gestion de la base de données
       command: docker-compose run --rm serveur bundle exec rails db:migrate
       args:

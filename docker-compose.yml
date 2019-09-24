@@ -49,8 +49,29 @@ services:
     networks:
       - postgres
 
+  pgbackups:
+    image: prodrigestivill/postgres-backup-local
+    restart: always
+    env_file:
+      - .env.serveur.prod
+    volumes:
+      - pgbackups:/backups
+    links:
+      - postgres
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_EXTRA_OPTS=-Z9 --schema=public --blobs
+      - SCHEDULE=@daily
+      - BACKUP_KEEP_DAYS=7
+      - BACKUP_KEEP_WEEKS=4
+      - BACKUP_KEEP_MONTHS=6
+      - HEALTHCHECK_PORT=80
+
 volumes:
   pgdata:
+  pgbackups:
   rails-storage:
 
 networks:
