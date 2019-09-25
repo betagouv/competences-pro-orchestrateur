@@ -56,9 +56,9 @@ services:
       - .env.serveur.prod
     volumes:
       - pgbackups:/backups
-    links:
-      - postgres
     depends_on:
+      - postgres
+    networks:
       - postgres
     environment:
       - POSTGRES_HOST=postgres
