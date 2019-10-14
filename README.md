@@ -1,5 +1,11 @@
 # Compétences pro orchestration
 
+Pour voir les autres projets de Compétences Pro:
+
+- [la partie cliente](https://github.com/betagouv/competences-pro)
+- [la partie serveur](https://github.com/betagouv/competences-pro-serveur)
+- [le site web](https://github.com/betagouv/competences-pro-www)
+
 ## Configuration
 
 Pour accéder à l'api, il faut rajouter une entrée dans votre fichier `/etc/hosts` :
