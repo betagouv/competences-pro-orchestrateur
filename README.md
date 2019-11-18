@@ -62,6 +62,13 @@ Un fichier `.env.serveur.prod`. `SECRET_KEY_BASE` et `DATABASE_URL` devraient ê
     RAILS_LOG_TO_STDOUT=true
     DATABASE_URL=postgres://postgres:@postgres/postgres
     JETON_SERVEUR_ROLLBAR=
+    EMAIL_DEFAULT_FROM=
+    SMTP_ADDRESS=
+    SMTP_PORT=
+    SMTP_USER_NAME=
+    SMTP_PASSWORD=
+    SMTP_AUTHENTICATION=
+    SMTP_TLS=
 
     ## information de connexion pour la sauvegarde BDD
     POSTGRES_USER=postgres
