@@ -40,3 +40,22 @@
           - "{{ chemin_config }}/traefik.toml:/etc/traefik/traefik.toml"
           - /var/run/docker.sock:/var/run/docker.sock
           - "{{ chemin_acme }}:/etc/traefik/acme"
+
+    - name: Démarre les images qui redirigent les anciennes url
+      docker_container:
+        image: francois2/docker-nginx-redirect
+        name: "redirige-preprod-{{ item.nom }}"
+        restart_policy: always
+        restart: true
+        networks:
+          - name: traefik
+        env:
+          REDIRECT_URL: "https://{{ item.nouveau }}"
+        labels:
+          traefik.enable: 'true'
+          traefik.port: '80'
+          traefik.frontend.rule: "Host:{{ item.ancien }}"
+          traefik.docker.network: 'traefik'
+      loop:
+        - { nom: 'preprod-client', ancien: 'preprod.competences-pro.beta.gouv.fr', nouveau: 'preprod.eva.beta.gouv.fr' }
+        - { nom: 'preprod-serveur', ancien: 'apipreprod.competences-pro.beta.gouv.fr', nouveau: 'apipreprod.eva.beta.gouv.fr' }
