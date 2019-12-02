@@ -59,3 +59,5 @@
       loop:
         - { nom: 'preprod-client', ancien: 'preprod.competences-pro.beta.gouv.fr', nouveau: 'preprod.eva.beta.gouv.fr' }
         - { nom: 'preprod-serveur', ancien: 'apipreprod.competences-pro.beta.gouv.fr', nouveau: 'apipreprod.eva.beta.gouv.fr' }
+        - { nom: 'prod-client', ancien: 'competences-pro.beta.gouv.fr', nouveau: 'app.eva.beta.gouv.fr' }
+        - { nom: 'prod-serveur', ancien: 'api.competences-pro.beta.gouv.fr', nouveau: 'api.app.eva.beta.gouv.fr' }
