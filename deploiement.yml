@@ -10,8 +10,8 @@
     version_orchestrateur: master
     version_serveur: master
     version_client: master
-    hote_client: competences-pro.beta.gouv.fr
-    hote_serveur: api.competences-pro.beta.gouv.fr
+    hote_client: app.eva.beta.gouv.fr
+    hote_serveur: api.app.eva.beta.gouv.fr
     docker_compose_environnement:
       CHEMIN_CLIENT: "{{ chemin_client }}"
       CHEMIN_SERVEUR: "{{ chemin_serveur }}"
