@@ -26,7 +26,7 @@
 
     - name: Démarre traefik
       docker_container:
-        image: traefik
+        image: traefik:v1.7
         name: traefik
         restart_policy: always
         pull: true
