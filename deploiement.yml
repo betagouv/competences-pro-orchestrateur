@@ -29,15 +29,15 @@
         force: yes
       loop:
         - destination: "{{ chemin_orchestrateur }}"
-          depot: competences-pro-orchestrateur
+          depot: eva-orchestrateur
           version: "{{ version_orchestrateur }}"
 
         - destination: "{{ chemin_serveur }}"
-          depot: competences-pro-serveur
+          depot: eva-serveur
           version: "{{ version_serveur }}"
 
         - destination: "{{ chemin_client }}"
-          depot: competences-pro
+          depot: eva
           version: "{{ version_client }}"
 
     - name: Copie le fichier d'environnement de production vers l'orchestrateur
