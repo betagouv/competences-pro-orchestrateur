@@ -2,16 +2,9 @@
 
 Pour voir les autres projets de eva:
 
-- [la partie client](https://github.com/betagouv/eva)
+- [la partie cliente](https://github.com/betagouv/eva)
 - [la partie serveur](https://github.com/betagouv/eva-serveur)
 - [le site web](https://github.com/betagouv/eva-www)
-
-
-Pour voir les autres projets de Compétences Pro:
-
-- [la partie cliente](https://github.com/betagouv/competences-pro)
-- [la partie serveur](https://github.com/betagouv/competences-pro-serveur)
-- [le site web](https://github.com/betagouv/competences-pro-www)
 
 ## Configuration
 
