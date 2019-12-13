@@ -1,4 +1,11 @@
-# Compétences pro orchestration
+# eva orchestration
+
+Pour voir les autres projets de eva:
+
+- [la partie client](https://github.com/betagouv/eva)
+- [la partie serveur](https://github.com/betagouv/eva-serveur)
+- [le site web](https://github.com/betagouv/eva-www)
+
 
 Pour voir les autres projets de Compétences Pro:
 
@@ -19,8 +26,8 @@ Pour démarrer l'environnement de développement :
 Pre-requis Mac : `docker-sync` (install avec `gem install docker-sync`)
 
 
-    git clone git@github.com:betagouv/competences-pro.git client
-    git clone git@github.com:betagouv/competences-pro-serveur.git serveur
+    git clone git@github.com:betagouv/eva.git client
+    git clone git@github.com:betagouv/eva-serveur.git serveur
 
     ./script/demarre
 
@@ -83,7 +90,7 @@ Puis lancer le déploiement (avec l'utilisateur distant `utilisateur`):
 
 Il est également possible de personnaliser les chemins, les branches ou les hôtes :
 
-    ansible-playbook --inventory=hotes --user=utilisateur --extra-vars="chemin_racine={{ansible_env.HOME}}/preprod hote_client=preprod.competences-pro.beta.gouv.fr hote_serveur=apipreprod.competences-pro.beta.gouv.fr" deploiement.yml
+    ansible-playbook --inventory=hotes --user=utilisateur --extra-vars="chemin_racine={{ansible_env.HOME}}/preprod hote_client=preprod.eva.beta.gouv.fr hote_serveur=apipreprod.eva.beta.gouv.fr" deploiement.yml
 
 Voici la liste des variables typique à personnaliser :
 
