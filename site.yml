@@ -10,7 +10,7 @@
   tasks:
     - name: Clone ou met à jour le dépot
       git:
-        repo: "https://github.com/betagouv/competences-pro-www.git"
+        repo: "https://github.com/betagouv/eva-www.git"
         version: "master"
         dest: "{{ chemin_site }}"
         force: yes
