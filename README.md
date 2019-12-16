@@ -36,7 +36,32 @@ Créer un fichier `hotes` en rajoutant l'adresse du serveur déployé :
 
     example.net:22
 
-## Déploiement de traefik
+### Configuration initiale de la machine
+
+La configuration initiale s'attend a pouvoir se connecter en root avec une clef publique.
+
+Lancer cette commande ansible:
+
+    ansible-playbook --inventory=hotes \
+                     --extra-vars="utilisateur_sudo=utilisateursudo" \
+                     --extra-vars="utilisateur_deploiement=utilisateur" \
+                     --extra-vars="prepare_machine=true" \
+                     installation.yml
+
+Cela fera principalement :
+ - fermeture de l'accès à l'utilisateur root,
+ - création de 2 utilisateurs : le premier pour les opérations d'administration de la machine et le deuxième pour déployer l'application.
+ - installation de docker
+
+Lors des opérations de maintenance ultérieur, l'accès root étant fermé, il
+faudra utiliser la commande suivante :
+
+    ansible-playbook --inventory=hotes \
+                     --extra-vars="utilisateur_sudo=utilisateursudo" \
+                     --extra-vars="utilisateur_deploiement=utilisateur" \
+                     installation.yml
+
+### Déploiement de traefik
 
 Nous utilisons [Traefik][] pour exposer les différents containers vers l'extérieur. Vous pouvez personaliser sa configuration en éditant le fichier `traefik.toml`.
 

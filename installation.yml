@@ -1,0 +1,165 @@
+---
+- name: prépare root
+  hosts: all
+  user: root
+  gather_facts: no
+
+  vars:
+    prepare_machine: no
+
+  tasks:
+    - when: prepare_machine | bool
+      block:
+        - name: crée l'utilisateur avec droits sudo
+          user:
+            name: '{{ utilisateur_sudo }}'
+            shell: /bin/bash
+            group: sudo
+
+        - name: crée le répertoire .ssh de l'utilisateur sudo
+          file:
+            state: directory
+            dest: '/home/{{ utilisateur_sudo }}/.ssh'
+            owner: '{{ utilisateur_sudo }}'
+
+        - name: copie les clefs publiques pour l'utilisateur sudo
+          assemble:
+            remote_src: no
+            src: clefs_publiques/
+            dest: '/home/{{ utilisateur_sudo }}/.ssh/authorized_keys'
+
+        - name: permet aux utilisateurs du group sudo de ne pas spécifier de mot de passe
+          lineinfile:
+            path: /etc/sudoers
+            regexp: '%sudo   ALL=(ALL:ALL) : ALL'
+            line: '%sudo   ALL=(ALL:ALL) NOPASSWD: ALL'
+
+- name: prépare utilisateur sudo
+  hosts: all
+  user: "{{ utilisateur_sudo }}"
+  become: yes
+
+  vars:
+    ipv6: 2001:41d0:305:2100:0:0:0:a04b
+    ipv6_prefix: 128
+    ipv6_gateway: 2001:41d0:0305:2100:0000:0000:0000:0001
+
+  tasks:
+
+    - name: crée l'utilisateur pour déployer les applications
+      user:
+        name: '{{ utilisateur_deploiement }}'
+        shell: /bin/bash
+
+    - name: crée les répertoires .ssh des deux utilisateurs
+      file:
+        state: directory
+        dest: '/home/{{ item }}/.ssh'
+        owner: '{{ item }}'
+      loop:
+        - '{{ utilisateur_sudo }}'
+        - '{{ utilisateur_deploiement }}'
+
+    - name: autorise tous les membres de l'équipe
+      assemble:
+        remote_src: no
+        src: clefs_publiques/
+        dest: '/home/{{ item }}/.ssh/authorized_keys'
+      loop:
+        - '{{ utilisateur_sudo }}'
+        - '{{ utilisateur_deploiement }}'
+
+    - name: empêche la connexion ssh pour root
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: 'PermitRootLogin yes'
+        line: 'PermitRootLogin no'
+
+    - name: empêche la connexion ssh avec un mot de passe
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: 'PasswordAuthentication yes'
+        line: 'PasswordAuthentication no'
+
+    - name: redémarre sshd
+      service:
+        name: sshd
+        state: reloaded
+
+    - name: configure ipv6
+      blockinfile:
+        path: /etc/network/interfaces
+        block: |
+          iface eth0 inet6 static
+            address {{ ipv6 }}
+            netmask {{ ipv6_prefix }}
+            post-up /sbin/ip -6 route add {{ ipv6_gateway }} dev eth0
+            post-up /sbin/ip -6 route add default via {{ ipv6_gateway }} dev eth0
+            pre-down /sbin/ip -6 route del default via {{ ipv6_gateway }} dev eth0
+            pre-down /sbin/ip -6 route del {{ ipv6_gateway }} dev eth0
+
+    - name: redémarre le réseau
+      service:
+        name: networking
+        state: restarted
+
+    - name: mets à jour les paquets
+      apt:
+        update_cache: yes
+        upgrade: safe
+
+    - name: installe htop
+      apt:
+        name: htop
+        update_cache: yes
+
+    - name: installe les paquets nécessaires pour docker
+      apt:
+        name: '{{ item }}'
+        update_cache: yes
+      loop:
+        - apt-transport-https
+        - ca-certificates
+        - gnupg2
+        - software-properties-common
+
+    - name: ajoute la clef publique du dépot docker
+      apt_key:
+        id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+        url: https://download.docker.com/linux/debian/gpg
+        state: present
+
+    - name: ajoute le dépôt docker
+      apt_repository:
+        repo: deb https://download.docker.com/linux/debian buster stable
+        state: present
+
+    - name: installe docker
+      apt:
+        name: '{{ item }}'
+        update_cache: yes
+      loop:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+
+    - name: ajoute nos utilisateurs au groupe docker
+      user:
+        name: "{{ item }}"
+        groups: docker
+        append: yes
+      loop:
+        - '{{ utilisateur_sudo }}'
+        - '{{ utilisateur_deploiement }}'
+
+    - name: install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.25.0/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 0755
+
+    - name: programme le nettoyage des images inutilisées de docker toutes les semaines
+      cron:
+        name: nettoie-docker
+        special_time: weekly
+        job: docker system prune --volumes --all --force
