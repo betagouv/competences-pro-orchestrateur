@@ -113,7 +113,7 @@
         name: htop
         update_cache: yes
 
-    - name: installe les paquets nécessaires pour docker
+    - name: installe les paquets nécessaires pour docker et les taches docker pour ansible
       apt:
         name: '{{ item }}'
         update_cache: yes
@@ -122,6 +122,7 @@
         - ca-certificates
         - gnupg2
         - software-properties-common
+        - python-docker
 
     - name: ajoute la clef publique du dépot docker
       apt_key:
