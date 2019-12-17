@@ -88,7 +88,7 @@ endpoint = "unix:///var/run/docker.sock"
 #
 # Required
 #
-domain = "competences-pro.beta.gouv.fr"
+domain = "eva.beta.gouv.fr"
 
 # Enable watch docker changes
 #
