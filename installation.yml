@@ -60,14 +60,22 @@
         - '{{ utilisateur_sudo }}'
         - '{{ utilisateur_deploiement }}'
 
-    - name: autorise tous les membres de l'équipe
-      assemble:
-        remote_src: no
-        src: clefs_publiques/
-        dest: '/home/{{ item }}/.ssh/authorized_keys'
-      loop:
-        - '{{ utilisateur_sudo }}'
-        - '{{ utilisateur_deploiement }}'
+    - name: autorise tous les membres de l'équipe a se connecter a l'utilisateur sudo
+      authorized_key:
+        user: '{{ utilisateur_sudo }}'
+        state: present
+        key: '{{ lookup("file", item) }}'
+      with_fileglob:
+        - clefs_equipe/*
+
+    - name: autorise tous les membres de l'équipe et circleci a se connecter à l'utilisateur deploiement
+      authorized_key:
+        user: '{{ utilisateur_deploiement }}'
+        state: present
+        key: '{{ lookup("file", item) }}'
+      with_fileglob:
+        - clefs_equipe/*
+        - clefs_deploiement/*
 
     - name: empêche la connexion ssh pour root
       lineinfile:
