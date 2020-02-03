@@ -12,11 +12,13 @@
     version_client: master
     hote_client: app.eva.beta.gouv.fr
     hote_serveur: api.app.eva.beta.gouv.fr
+    hote_metabase: metabase.eva.beta.gouv.fr
     docker_compose_environnement:
       CHEMIN_CLIENT: "{{ chemin_client }}"
       CHEMIN_SERVEUR: "{{ chemin_serveur }}"
       HOTE_CLIENT: "{{ hote_client }}"
       HOTE_SERVEUR: "{{ hote_serveur }}"
+      HOTE_METABASE: "{{ hote_metabase }}"
       RESEAU_TRAEFIK: "traefik"
       COMPOSE_PROJECT_NAME: "{{ chemin_racine|replace('/', '-') }}"
 
