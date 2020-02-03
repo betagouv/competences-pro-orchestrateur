@@ -118,6 +118,7 @@ Voici la liste des variables typique à personnaliser :
 - `version_client`
 - `hote_client`
 - `hote_serveur`
+- `hote_metabase`
 
 **Attention : il faut impérativement spécifier un `chemin_racine` différent de `{{ ansible_env.HOME }}` si on souhaite déployer d'autres versions que `master`. Dans le cas contraire, l'application pointera vers la base de données de production, avec tous les risques de corruption que cela peut entraîner.**
 
