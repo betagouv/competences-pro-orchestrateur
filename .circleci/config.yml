@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.2
+    steps:
+      - checkout
+      - run: |
+            python3 -m venv env
+            . env/bin/activate
+            pip install ansible
+      - run: |
+          . env/bin/activate
+          ansible-playbook --syntax-check site.yml deploiement.yml traefik.yml installation.yml
+
+  deploy:
+    machine:
+      enabled: true
+    steps:
+      - run: pip install ansible
+      - run: git clone git@github.com:betagouv/eva-orchestrateur.git
+      - run:
+          working_directory: eva-orchestrateur
+          command: echo ${DEPLOIEMENT_HOTE} > hotes
+      - run:
+          working_directory: eva-orchestrateur
+          command: ansible-playbook --inventory=hotes --user=${DEPLOIEMENT_UTILISATEUR} --extra-vars="chemin_racine={{ansible_env.HOME}}/preprod hote_client=preprod.eva.beta.gouv.fr hote_serveur=apipreprod.eva.beta.gouv.fr hote_metabase=metabasepreprod.eva.beta.gouv.fr" deploiement.yml
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master
