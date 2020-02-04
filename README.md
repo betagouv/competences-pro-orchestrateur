@@ -122,9 +122,18 @@ Voici la liste des variables typique à personnaliser :
 
 **Attention : il faut impérativement spécifier un `chemin_racine` différent de `{{ ansible_env.HOME }}` si on souhaite déployer d'autres versions que `master`. Dans le cas contraire, l'application pointera vers la base de données de production, avec tous les risques de corruption que cela peut entraîner.**
 
+## Configuration et utilisation de Metabase
+
+Par défaut, l'application est déployé avec une instance de [Metabase][]. Vous aurez besoin de créer un utilisateur postgres en lecture seule.
+
+    CREATE ROLE metabase WITH LOGIN PASSWORD '<PASSWORD>';
+    GRANT CONNECT ON DATABASE <POSTGRES_DB> TO metabase;
+    GRANT SELECT ON ALL TABLES IN SCHEMA public TO metabase;
+
 ## Licence
 
 Ce logiciel et son code source sont distribués sous [licence AGPL](https://www.gnu.org/licenses/why-affero-gpl.fr.html).
 
 [ansible]: https://www.ansible.com/
 [traefik]: https://traefik.io/
+[metabase]: https://www.metabase.com/
