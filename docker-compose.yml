@@ -62,7 +62,7 @@ services:
       - postgres
     environment:
       - POSTGRES_HOST=postgres
-      - POSTGRES_EXTRA_OPTS=-Z9 --schema=public --blobs --format=c
+      - POSTGRES_EXTRA_OPTS=-Z9 --blobs --format=c
       - SCHEDULE=@daily
       - BACKUP_KEEP_DAYS=7
       - BACKUP_KEEP_WEEKS=4
