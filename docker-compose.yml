@@ -50,7 +50,7 @@ services:
       - postgres
 
   pgbackups:
-    image: prodrigestivill/postgres-backup-local
+    image: prodrigestivill/postgres-backup-local:11
     restart: always
     env_file:
       - .env.serveur.prod

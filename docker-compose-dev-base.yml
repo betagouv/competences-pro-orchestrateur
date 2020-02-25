@@ -34,7 +34,7 @@ services:
     image: postgres:11
 
   pgbackups:
-    image: prodrigestivill/postgres-backup-local
+    image: prodrigestivill/postgres-backup-local:11
     env_file:
       - .env.serveur
     volumes:
