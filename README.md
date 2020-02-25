@@ -130,6 +130,13 @@ Par défaut, l'application est déployé avec une instance de [Metabase][]. Vous
     GRANT CONNECT ON DATABASE <POSTGRES_DB> TO metabase;
     GRANT SELECT ON ALL TABLES IN SCHEMA public TO metabase;
 
+## Restauration de backups
+
+Pour restaurer un backup
+
+    docker cp backup.dump postgres:/root/
+    docker exec postgres pg_restore --username <nomutilisateur> --dbname <nombasededonnes> /root/backup.dump
+
 ## Licence
 
 Ce logiciel et son code source sont distribués sous [licence AGPL](https://www.gnu.org/licenses/why-affero-gpl.fr.html).
