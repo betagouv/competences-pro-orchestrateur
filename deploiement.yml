@@ -71,3 +71,25 @@
       args:
         chdir: "{{ chemin_orchestrateur }}"
       environment: "{{ docker_compose_environnement }}"
+
+    - name: Ajoute un script pour pouvoir facilement lancer docker-compose
+      copy:
+        content: "CHEMIN_CLIENT={{ docker_compose_environnement.CHEMIN_CLIENT }} CHEMIN_SERVEUR={{ docker_compose_environnement.CHEMIN_SERVEUR }} RESEAU_TRAEFIK={{ docker_compose_environnement.RESEAU_TRAEFIK }} COMPOSE_PROJECT_NAME={{ docker_compose_environnement.COMPOSE_PROJECT_NAME }} docker-compose $@"
+        dest: "{{ chemin_orchestrateur }}/dc"
+        mode: 0755
+
+    - name: Ajoute la tache de copie du backup dans un cron
+      cron:
+        name: "backup-{{ docker_compose_environnement.COMPOSE_PROJECT_NAME }}"
+        hour: "4"
+        minute: "0"
+        job: >-
+          cd {{chemin_orchestrateur}};
+          export env $(cat .env.serveur.prod | xargs);
+          CONTAINER_PGBACKUP=$(./dc ps --quiet pgbackups);
+          docker cp $CONTAINER_PGBACKUP:/backups ./backups;
+          CONTAINER_SERVEUR=$(./dc ps --quiet serveur);
+          docker cp $CONTAINER_SERVEUR:/app/storage ./backups;
+          CONTAINER_METABASE=$(./dc ps --quiet metabase);
+          docker cp $CONTAINER_METABASE:/metabase-data/ ./backups;
+          lftp -u $BACKUP_UTILISATEUR,$BACKUP_PASSWORD -e "set ftp:ssl-allow no; mkdir /backups/{{docker_compose_environnement.COMPOSE_PROJECT_NAME}}; mirror --reverse --delete backups /backups/{{docker_compose_environnement.COMPOSE_PROJECT_NAME}}; quit" $BACKUP_SERVEUR;
