@@ -78,6 +78,16 @@
         dest: "{{ chemin_orchestrateur }}/dc"
         mode: 0755
 
+    - name: Lance les crons avec bash
+      cronvar:
+        name: SHELL
+        value: /usr/bin/bash
+
+    - name: Ajoute tout les chemins possible dans le PATH du cron
+      cronvar:
+        name: PATH
+        value: /usr/local/bin:/usr/bin
+
     - name: Ajoute la tache de copie du backup dans un cron
       cron:
         name: "backup-{{ docker_compose_environnement.COMPOSE_PROJECT_NAME }}"
