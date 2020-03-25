@@ -48,6 +48,12 @@
         src: "{{ chemin_config }}/.env.serveur.prod"
         dest: "{{ chemin_orchestrateur }}/.env.serveur.prod"
 
+    - name: Arrête métabase dans le but de gagner un peu de mémoire
+      command: docker-compose stop metabase
+      args:
+        chdir: "{{ chemin_orchestrateur }}"
+      environment: "{{ docker_compose_environnement }}"
+
     - name: Construis les images docker
       command: docker-compose build --pull
       args:
