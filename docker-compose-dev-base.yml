@@ -32,6 +32,8 @@ services:
 
   postgres:
     image: postgres:11
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
 
   pgbackups:
     image: prodrigestivill/postgres-backup-local:11
