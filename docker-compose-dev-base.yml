@@ -22,7 +22,7 @@ services:
       - serveur
 
   serveur:
-    image: ruby:2.6
+    image: ruby:2.7.3
     env_file:
       - .env.serveur
     working_dir: /app
@@ -31,7 +31,7 @@ services:
       - postgres
 
   postgres:
-    image: postgres:11
+    image: postgres:12
     environment:
       POSTGRES_HOST_AUTH_METHOD: "trust"
 
